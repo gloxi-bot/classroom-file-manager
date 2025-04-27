@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Classroom File Manager with Web Storage & Canvas</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="container" role="main" aria-label="Advanced File Manager Application">
+  <header>
+    <h1>Classroom File Manager</h1>
+  </header>
+
+  <div class="toolbar" role="toolbar" aria-label="File management actions">
+    <button class="primary" id="new-folder-btn" aria-haspopup="dialog" aria-controls="new-folder-modal" aria-expanded="false">
+      <span>➕</span> New Folder
+    </button>
+    <button id="upload-btn" aria-label="Upload files">
+      <span>⬆️</span> Upload
+    </button>
+    <button class="danger" id="delete-btn" disabled aria-disabled="true" aria-label="Delete selected files or folders">
+      <span>🗑️</span> Delete
+    </button>
+    <select id="sort-select" aria-label="Sort files and folders">
+      <option value="name-asc">Sort by Name (A-Z)</option>
+      <option value="name-desc">Sort by Name (Z-A)</option>
+      <option value="type">Sort by Type</option>
+    </select>
+    <input type="search" id="search-input" placeholder="Search files and folders..." aria-label="Search files and folders" />
+    <button id="view-toggle" aria-pressed="false" aria-label="Toggle list/grid view" title="Toggle List/Grid View">🔳</button>
+    <button id="dark-mode-toggle" aria-pressed="false" aria-label="Toggle dark mode" title="Toggle Dark Mode">🌙</button>
+  </div>
+
+  <div class="path-container" aria-label="Breadcrumb navigation">
+    <div class="path" id="path" role="navigation" aria-live="polite" aria-atomic="true">
+      <span data-path="root" tabindex="0">Home</span>
+    </div>
+  </div>
+
+  <div class="file-container" id="file-container" role="list" aria-label="Files and folders" tabindex="0">
+    <div class="empty-message" role="alert" aria-live="assertive">This folder is empty</div>
+  </div>
+</div>
+
+<!-- New Folder Modal -->
+<div class="modal" id="new-folder-modal" role="dialog" aria-modal="true" aria-labelledby="new-folder-title" tabindex="-1">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="new-folder-title">Create New Folder</h2>
+      <button class="modal-close" aria-label="Close new folder dialog">&times;</button>
+    </div>
+    <div class="modal-form">
+      <input type="text" id="folder-name-input" placeholder="Folder name" aria-describedby="folder-name-desc" />
+      <div id="folder-name-desc" class="visually-hidden">Enter the name for the new folder</div>
+      <div class="modal-actions">
+        <button class="modal-cancel" aria-label="Cancel creating new folder">Cancel</button>
+        <button class="primary" id="create-folder-btn" aria-label="Create new folder">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Context Menu -->
+<div class="context-menu" id="context-menu" role="menu" style="display: none;">
+  <div class="context-menu-item" data-action="open" role="menuitem" tabindex="0">Open</div>
+  <div class="context-menu-item" data-action="rename" role="menuitem" tabindex="0">Rename</div>
+  <div class="context-menu-item" data-action="delete" role="menuitem" tabindex="0">Delete</div>
+  <div class="context-menu-item" data-action="copy-name" role="menuitem" tabindex="0">Copy Name</div>
+  <div class="context-menu-item" data-action="copy-path" role="menuitem" tabindex="0">Copy Path</div>
+</div>
+
+<!-- Preview Modal -->
+<div id="preview-modal" role="dialog" aria-modal="true" aria-labelledby="preview-title" tabindex="-1">
+  <div id="preview-content">
+    <button class="modal-close" id="preview-close" aria-label="Close preview">&times;</button>
+    <h2 id="preview-title" style="margin-bottom:10px;"></h2>
+    <textarea id="file-editor" aria-label="File content editor" spellcheck="false" style="display:none;"></textarea>
+    <div id="preview-body"></div>
+    <canvas id="preview-canvas" style="display:none; max-width:100%; max-height:80vh; border-radius:8px;"></canvas>
+    <div class="modal-actions" style="margin-top:10px; display:none;">
+      <button id="save-edit-btn" class="primary">Save</button>
+      <button id="cancel-edit-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
